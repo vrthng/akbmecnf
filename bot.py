@@ -142,6 +142,7 @@ async def main():
 
 
 if __name__ == "__main__":
-    asyncio.run(main())
 # Запускаем веб-сервер в отдельном потоке
 threading.Thread(target=run_web).start()
+# Запускаем бота
+    asyncio.run(main())
