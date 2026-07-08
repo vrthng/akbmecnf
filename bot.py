@@ -1,3 +1,17 @@
+from flask import Flask
+import threading
+import os
+
+app = Flask(__name__)
+
+@app.route('/')
+def hello():
+    return "I'm alive!"
+
+def run_web():
+    port = int(os.environ.get("PORT", 10000))
+    app.run(host='0.0.0.0', port=port)
+
 """
 Главный файл запуска Telegram бота для поиска и загрузки книг из Flibusta.
 """
@@ -129,3 +143,5 @@ async def main():
 
 if __name__ == "__main__":
     asyncio.run(main())
+# Запускаем веб-сервер в отдельном потоке
+threading.Thread(target=run_web).start()
