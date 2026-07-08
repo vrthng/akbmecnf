@@ -4,7 +4,7 @@
 """
 import asyncio
 import os
-import threading
+import sys
 from flask import Flask, request
 
 from aiogram import Bot, Dispatcher, types
@@ -31,7 +31,7 @@ download_service = DownloadService(opds)
 # ===== Flask для Webhook =====
 app = Flask(__name__)
 
-# ===== ВСЕ ОБРАБОТЧИКИ КОМАНД (без изменений) =====
+# ===== ВСЕ ОБРАБОТЧИКИ КОМАНД =====
 
 @dp.message(Command("start"), WhitelistFilter())
 async def cmd_start_handler(message):
@@ -113,9 +113,7 @@ def health_check():
 
 def setup_webhook():
     """Устанавливает вебхук при запуске"""
-    try:
-        # Получаем URL из переменной окружения
-        hostname = os.environ.get("RENDER_EXTERNAL_HOSTNAME")
+    try:hostname = os.environ.get("RENDER_EXTERNAL_HOSTNAME")
         if not hostname:
             logger.warning("RENDER_EXTERNAL_HOSTNAME не установлен, пропускаем настройку вебхука")
             return
@@ -132,7 +130,7 @@ def setup_webhook():
 
 # ===== ЗАПУСК =====
 
-if __name__ == "__main__":
+if name == "__main__":
     # Настраиваем вебхук
     setup_webhook()
     
@@ -140,5 +138,4 @@ if __name__ == "__main__":
     port = int(os.environ.get("PORT", 10000))
     logger.info(f"Запуск веб-сервера на порту {port}")
     
-    # Используем обычный запуск (не в потоке)
     app.run(host='0.0.0.0', port=port)
