@@ -142,7 +142,7 @@ async def main():
         await opds.close()
         logger.info("Бот остановлен")
 
-===== Keep-Alive =====
+
 def keep_alive():
     """Раз в 590 секунд пингует себя, чтобы Render не усыпил"""
     while True:
