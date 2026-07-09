@@ -1,6 +1,8 @@
 from flask import Flask
 import threading
 import os
+import time
+import requests
 
 app = Flask(__name__)
 
@@ -140,9 +142,17 @@ async def main():
         await opds.close()
         logger.info("Бот остановлен")
 
-
-if __name__ == "__main__":
-    # Запускаем веб-сервер в отдельном потоке
+===== Keep-Alive =====
+def keep_alive():
+    """Раз в 590 секунд пингует себя, чтобы Render не усыпил"""
+    while True:
+        time.sleep(590)
+        try:
+            requests.get("http://localhost:10000/")
+        except:
+            pass
+            
+if name == "main":
     threading.Thread(target=run_web).start()
-    # Запускаем бота
+    threading.Thread(target=keep_alive, daemon=True).start()
     asyncio.run(main())
