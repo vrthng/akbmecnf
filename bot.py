@@ -144,9 +144,9 @@ async def main():
 
 
 def keep_alive():
-    """Раз в 590 секунд пингует себя, чтобы Render не усыпил"""
+    """Раз в 60 секунд пингует себя, чтобы Render не усыпил"""
     while True:
-        time.sleep(590)
+        time.sleep(60)
         try:
             requests.get("http://localhost:10000/")
         except:
