@@ -142,15 +142,17 @@ async def main():
         await opds.close()
         logger.info("Бот остановлен")
 
-
+# ===== Keep-Alive =====
 def keep_alive():
-    """Раз в 60 секунд пингует себя, чтобы Render не усыпил"""
+    """Раз в 4 минуты пингует ВНЕШНИЙ URL, чтобы Render видел активность"""
+    render_url = os.environ.get("RENDER_EXTERNAL_URL", "https://akbmecnf.onrender.com")
     while True:
-        time.sleep(60)
+        time.sleep(240)  # 4 минуты
         try:
-            requests.get("http://localhost:10000/")
-        except:
-            pass
+            requests.get(render_url + "/")
+            print("[Keep-Alive] Пинг отправлен на внешний URL")
+        except Exception as e:
+            print(f"[Keep-Alive] Ошибка: {e}")
             
 if __name__ == "__main__":
     import time
