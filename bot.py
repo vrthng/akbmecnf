@@ -152,7 +152,7 @@ def keep_alive():
         except:
             pass
             
-if name == "main":
+if __name__ == "__main__":
     threading.Thread(target=run_web).start()
     threading.Thread(target=keep_alive, daemon=True).start()
     asyncio.run(main())
