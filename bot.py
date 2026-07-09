@@ -154,7 +154,19 @@ def keep_alive():
             
 if __name__ == "__main__":
     import time
-    threading.Thread(target=run_web).start()
-    time.sleep(1)
-    #threading.Thread(target=keep_alive, daemon=True).start()
+
+    # 1. Запускаем Flask (порт для Render)
+    threading.Thread(target=run_web, daemon=True).start()
+    
+    # 2. Даем Flask 2 секунды, чтобы открыть порт
+    time.sleep(2)
+
+    # 3. Запускаем keep-alive (но с задержкой, чтобы не мешать боту)
+    def start_keep_alive():
+        time.sleep(5)  # Ждем 5 секунд после запуска бота
+        keep_alive()
+    
+    threading.Thread(target=start_keep_alive, daemon=True).start()
+
+    # 4. Запускаем самого бота (он теперь главный и единственный)
     asyncio.run(main())
